@@ -10,12 +10,9 @@
 		FF09306A2767C1A800CCC9E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0930692767C1A800CCC9E9 /* AppDelegate.swift */; };
 		FF09306C2767C1A800CCC9E9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF09306B2767C1A800CCC9E9 /* SceneDelegate.swift */; };
 		FF09306E2767C1A800CCC9E9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF09306D2767C1A800CCC9E9 /* ViewController.swift */; };
-		FF0930712767C1A800CCC9E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF09306F2767C1A800CCC9E9 /* Main.storyboard */; };
 		FF0930732767C1AE00CCC9E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF0930722767C1AE00CCC9E9 /* Assets.xcassets */; };
 		FF0930762767C1AE00CCC9E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF0930742767C1AE00CCC9E9 /* LaunchScreen.storyboard */; };
 		FF0930812767C1AE00CCC9E9 /* RSSReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0930802767C1AE00CCC9E9 /* RSSReaderTests.swift */; };
-		FF09308B2767C1AE00CCC9E9 /* RSSReaderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF09308A2767C1AE00CCC9E9 /* RSSReaderUITests.swift */; };
-		FF09308D2767C1AE00CCC9E9 /* RSSReaderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF09308C2767C1AE00CCC9E9 /* RSSReaderUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,15 +37,12 @@
 		FF0930692767C1A800CCC9E9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF09306B2767C1A800CCC9E9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FF09306D2767C1A800CCC9E9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FF0930702767C1A800CCC9E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF0930722767C1AE00CCC9E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF0930752767C1AE00CCC9E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FF0930772767C1AE00CCC9E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF09307C2767C1AE00CCC9E9 /* RSSReaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RSSReaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF0930802767C1AE00CCC9E9 /* RSSReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSReaderTests.swift; sourceTree = "<group>"; };
 		FF0930862767C1AE00CCC9E9 /* RSSReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RSSReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF09308A2767C1AE00CCC9E9 /* RSSReaderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSReaderUITests.swift; sourceTree = "<group>"; };
-		FF09308C2767C1AE00CCC9E9 /* RSSReaderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSReaderUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +75,6 @@
 			children = (
 				FF0930682767C1A800CCC9E9 /* RSSReader */,
 				FF09307F2767C1AE00CCC9E9 /* RSSReaderTests */,
-				FF0930892767C1AE00CCC9E9 /* RSSReaderUITests */,
 				FF0930672767C1A800CCC9E9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -102,7 +95,6 @@
 				FF0930692767C1A800CCC9E9 /* AppDelegate.swift */,
 				FF09306B2767C1A800CCC9E9 /* SceneDelegate.swift */,
 				FF09306D2767C1A800CCC9E9 /* ViewController.swift */,
-				FF09306F2767C1A800CCC9E9 /* Main.storyboard */,
 				FF0930722767C1AE00CCC9E9 /* Assets.xcassets */,
 				FF0930742767C1AE00CCC9E9 /* LaunchScreen.storyboard */,
 				FF0930772767C1AE00CCC9E9 /* Info.plist */,
@@ -116,15 +108,6 @@
 				FF0930802767C1AE00CCC9E9 /* RSSReaderTests.swift */,
 			);
 			path = RSSReaderTests;
-			sourceTree = "<group>";
-		};
-		FF0930892767C1AE00CCC9E9 /* RSSReaderUITests */ = {
-			isa = PBXGroup;
-			children = (
-				FF09308A2767C1AE00CCC9E9 /* RSSReaderUITests.swift */,
-				FF09308C2767C1AE00CCC9E9 /* RSSReaderUITestsLaunchTests.swift */,
-			);
-			path = RSSReaderUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +216,6 @@
 			files = (
 				FF0930762767C1AE00CCC9E9 /* LaunchScreen.storyboard in Resources */,
 				FF0930732767C1AE00CCC9E9 /* Assets.xcassets in Resources */,
-				FF0930712767C1A800CCC9E9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,8 +258,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF09308D2767C1AE00CCC9E9 /* RSSReaderUITestsLaunchTests.swift in Sources */,
-				FF09308B2767C1AE00CCC9E9 /* RSSReaderUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,14 +277,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		FF09306F2767C1A800CCC9E9 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FF0930702767C1A800CCC9E9 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FF0930742767C1AE00CCC9E9 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
