@@ -14,41 +14,52 @@ final class FeedsViewModel: FeedsVMProtocol {
 
     //MARK: - Public properties
 
-    var feeds = BehaviorSubject<[FeedModel]>(value: [])
-    var selectedFeed = PublishSubject<FeedModel>()
+    lazy var reloadSignal: Observable<Void> = self.reloadMutable
+                                                    .asObservable()
+                                                    .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+    var didSelectFeed: ((FeedRealmModel) -> ())?
 
     //MARK: - Private properties
 
-    private var feedsService: FeedsServiceProtocol
-    private var feedsPaths = ["https://www.24sata.hr/feeds/tech.xml", "https://www.24sata.hr/feeds/lifestyle.xml", "https://www.24sata.hr/feeds/sport.xml", "https://www.24sata.hr/feeds/show.xml", "https://www.24sata.hr/feeds/fun.xml"]
-    private var feedsArr = [FeedModel]()
+    private var feedManager: FeedManager
+    private var realmFeeds = [FeedRealmModel]()
+    private let reloadMutable = BehaviorRelay(value: ())
     private let disposeBag = DisposeBag()
 
-    init(feedsService: FeedsServiceProtocol) {
-        self.feedsService = feedsService
-        fetchFeed()
+    init(feedManager: FeedManager) {
+        self.feedManager = feedManager
+        realmFeeds = feedManager.getFeeds()
     }
 
-    func fetchFeed() {
-        feedsPaths.forEach { path in
-            guard let url = URL(string: path) else { return }
+    func fetchFeed(completion: @escaping (String) ->()) {
+        feedManager.fetchAndSaveFeed()
+            .observeOn(MainScheduler.instance)
+            .subscribe(
+                onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.realmFeeds = self.feedManager.getFeeds()
+                    self.reloadMutable.accept(())
 
-            feedsService.getFeeds(path: url) { [weak self] rssFeed in
-                guard let strongSelf = self else { return }
-                switch rssFeed {
-                case .success(let feed):
-                    if let fd = feed, let items = fd.items {
-                        let feedItems = items.compactMap { FeedItem.init(itemTitle:$0.title, itemImage:$0.enclosure?.attributes?.url, url: $0.link)}
-                        let feed = FeedModel(title: fd.title, image: fd.image?.url, items: feedItems)
-                        strongSelf.feedsArr.append(feed)
-                        strongSelf.feeds.onNext(strongSelf.feedsArr)
+                    if self.realmFeeds.count == 0 {
+                        let msg = "Please check your internet connection."
+                        completion(msg)
                     }
-                case .failure(let error):
-                    //add alert ?? 
-                    print(error.localizedDescription)
-                }
-            }
-        }
+                }, onError: { errorMsg in
+                    completion(errorMsg.localizedDescription)
+                })
+            .disposed(by: disposeBag)
+    }
+
+    func numberOfItems() -> Int {
+        return realmFeeds.count
+    }
+
+    func item(for index: IndexPath) -> FeedRealmModel {
+        return realmFeeds[index.row]
+    }
+
+    func didTapFeed(at index: IndexPath) {
+        didSelectFeed?(realmFeeds[index.row])
     }
 
     deinit {

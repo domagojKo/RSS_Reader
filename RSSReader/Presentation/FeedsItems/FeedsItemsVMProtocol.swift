@@ -10,7 +10,9 @@ import RxSwift
 import RxRelay
 
 protocol FeedsItemsVMProtocol {
-    var selectedFeedItem: PublishSubject<FeedItem> { get }
-    var feed: BehaviorSubject<[FeedItem]> { get }
-    var title: BehaviorRelay<String?> { get }
+    var title: String? { get }
+
+    func numberOfItems() -> Int
+    func item(for index: IndexPath) -> FeedItemRealmModel
+    func didTapFeedItem(at index: IndexPath)
 }

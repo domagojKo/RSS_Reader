@@ -7,8 +7,13 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 protocol FeedsVMProtocol {
-    var selectedFeed: PublishSubject<FeedModel> { get }
-    var feeds: BehaviorSubject<[FeedModel]> { get }
+    var reloadSignal: Observable<Void> { get }
+   
+    func numberOfItems() -> Int
+    func item(for index: IndexPath) -> FeedRealmModel
+    func didTapFeed(at index: IndexPath)
+    func fetchFeed(completion: @escaping (String) ->())
 }

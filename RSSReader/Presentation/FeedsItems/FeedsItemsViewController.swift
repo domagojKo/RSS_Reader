@@ -17,21 +17,20 @@ class FeedsItemsViewController: UIViewController {
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
+        tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: FeedTableViewCell.cellIdentifier)
         tableView.rowHeight = 100
         return tableView
     }()
 
-    //MARK: - Private properties
-
-    private let disposeBag = DisposeBag()
+    //MARK: - ViewController Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
         setupNav()
-        bindTableView()
     }
 
     deinit {
@@ -39,25 +38,29 @@ class FeedsItemsViewController: UIViewController {
     }
 }
 
-//MARK: - Binding
+//MARK: - TableView DataSource methods
 
-extension FeedsItemsViewController {
-    func bindTableView() {
-        viewModel.feed
-            .observeOn(MainScheduler.instance)
-            .bind(to: tableView.rx.items(cellIdentifier: FeedTableViewCell.cellIdentifier, cellType: FeedTableViewCell.self)) { index, item, cell in
-                cell.feedItem = item
-            }.disposed(by: disposeBag)
+extension FeedsItemsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.numberOfItems()
+    }
 
-        tableView.rx.itemSelected
-            .subscribe(onNext: { (indexPath) in
-                self.tableView.deselectRow(at: indexPath, animated: true)
-            })
-            .disposed(by: disposeBag)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FeedTableViewCell.cellIdentifier, for: indexPath) as! FeedTableViewCell
 
-        tableView.rx.modelSelected(FeedItem.self)
-            .bind(to: viewModel.selectedFeedItem)
-            .disposed(by: disposeBag)
+        let feedItem = viewModel.item(for: indexPath)
+        cell.feedItem = feedItem
+
+        return cell
+    }
+}
+
+//MARK: - TableView Delegate methods
+
+extension FeedsItemsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        viewModel.didTapFeedItem(at: indexPath)
     }
 }
 
@@ -74,6 +77,6 @@ extension FeedsItemsViewController {
     }
 
     func setupNav() {
-        navigationItem.title = viewModel.title.value
+        navigationItem.title = viewModel.title
     }
 }

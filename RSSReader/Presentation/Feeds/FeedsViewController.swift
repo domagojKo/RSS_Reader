@@ -18,6 +18,8 @@ class FeedsViewController: UIViewController {
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
+        tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: FeedTableViewCell.cellIdentifier)
         tableView.rowHeight = 100
         return tableView
@@ -34,33 +36,42 @@ class FeedsViewController: UIViewController {
 
         setupUI()
         setupNav()
-        bindTableView()
-    }
 
-    deinit {
-        print("\(#function) from \(#file) called")
+        viewModel.fetchFeed { [weak self] errorMsg in
+            self?.presentAlert(withTitle: "Error", message: errorMsg)
+        }
+
+        viewModel.reloadSignal
+            .subscribe(onNext: { [weak self] _ in
+                guard let strongSelf = self else { return }
+                strongSelf.tableView.reloadData()
+            }).disposed(by: disposeBag)
     }
 }
 
-//MARK: - Binding
+//MARK: - TableView DataSource methods
 
-extension FeedsViewController {
-    func bindTableView() {
-        viewModel.feeds
-            .observeOn(MainScheduler.instance)
-            .bind(to: tableView.rx.items(cellIdentifier: FeedTableViewCell.cellIdentifier, cellType: FeedTableViewCell.self)) { index, feed, cell in
-                cell.feed = feed
-            }.disposed(by: disposeBag)
+extension FeedsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.numberOfItems()
+    }
 
-        tableView.rx.itemSelected
-            .subscribe(onNext: { (indexPath) in
-                self.tableView.deselectRow(at: indexPath, animated: true)
-            })
-            .disposed(by: disposeBag)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FeedTableViewCell.cellIdentifier, for: indexPath) as! FeedTableViewCell
 
-        tableView.rx.modelSelected(FeedModel.self)
-            .bind(to: viewModel.selectedFeed)
-            .disposed(by: disposeBag)
+        let feed = viewModel.item(for: indexPath)
+        cell.feed = feed
+        
+        return cell
+    }
+}
+
+//MARK: - TableView Delegate methods
+
+extension FeedsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        viewModel.didTapFeed(at: indexPath)
     }
 }
 

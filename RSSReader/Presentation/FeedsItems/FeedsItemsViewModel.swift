@@ -12,17 +12,29 @@ import RxCocoa
 final class FeedsItemsViewModel: FeedsItemsVMProtocol {
 
     //MARK: - Public properties
-    var feed: BehaviorSubject<[FeedItem]> = BehaviorSubject(value: [])
-    var title: BehaviorRelay<String?> = BehaviorRelay(value: "")
-    var selectedFeedItem = PublishSubject<FeedItem>()
+
+    var title: String?
+    var didSelectFeedItem: ((String?) -> ())?
 
     //MARK: - Private properties
-    private let imageService: FeedImageService
 
-    init(feedModel: FeedModel) {
-        imageService = FeedImageService.instance
-        feed.onNext(feedModel.feedItems)
-        title = BehaviorRelay<String?>(value: feedModel.feedTitle ?? "")
+    private var feedItems = [FeedItemRealmModel]()
+
+    init(feedModel: FeedRealmModel) {
+        feedItems = feedModel.feedItems.map { $0 }
+        title = feedModel.title
+    }
+
+    func numberOfItems() -> Int {
+        return feedItems.count
+    }
+
+    func item(for index: IndexPath) -> FeedItemRealmModel {
+        return feedItems[index.row]
+    }
+
+    func didTapFeedItem(at index: IndexPath) {
+        didSelectFeedItem?(feedItems[index.row].url)
     }
 
     deinit {
